@@ -1,0 +1,20 @@
+{
+	"name":	"/",
+	"type":	1,
+	"size":	0,
+	"iv":	"AAAAAAAAAAAAAAAAAAAAAA==",
+	"children":	[{
+			"name":	"new",
+			"type":	1,
+			"size":	0,
+			"iv":	"AAAAAAAAAAAAAAAAAAAAAA==",
+			"children":	[{
+					"name":	"mypassword.txt",
+					"type":	0,
+					"size":	12,
+					"iv":	"Xpmao4dKwa9MsfD+c3v8CA==",
+					"content":	"—¡¢cÂ\r\u0004ÅÄú‡ä",
+					"children":	[]
+				}]
+		}]
+}
