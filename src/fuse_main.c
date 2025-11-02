@@ -30,7 +30,6 @@ static Node *find_node(const char *path) {
     printf("Path is too long\n");
     return NULL;
   }
-
   char tmp[MAX_PATH_LEN];
 
   strcpy(tmp, path);
@@ -332,8 +331,8 @@ int my_read(const char *path, char *buf, size_t size, off_t offset,
   // buffer to contain decrypted contents
   unsigned char decbuf[MAX_CONTENT_SIZE];
 
-  int dec_len =
-      decrypt_buffer((unsigned char *)file->content, file->size, decbuf);
+  int dec_len = decrypt_buffer((unsigned char *)file->content, file->size,
+                               decbuf, file->iv);
 
   if (dec_len < 0) {
     // IO error
@@ -372,7 +371,7 @@ int my_write(const char *path, const char *buf, size_t size, off_t offset,
   unsigned char encbuf[MAX_CONTENT_SIZE];
 
   // the encryption magic
-  int enc_len = encrypt_buffer((unsigned char *)buf, size, encbuf);
+  int enc_len = encrypt_buffer((unsigned char *)buf, size, encbuf, file->iv);
 
   if (enc_len < 0) {
 
@@ -414,7 +413,7 @@ int my_truncate(const char *path, off_t size, struct fuse_file_info *fi) {
 // exiting file system and saving state once more
 void my_destroy(void *private_data) {
 
-  printf("Filesystem is being destroyed — saving state.\n");
+  printf("Filesystem is being destroyed - saving state.\n");
   save_to_disk(SAVE_PATH);
 }
 

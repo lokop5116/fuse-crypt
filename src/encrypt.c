@@ -10,7 +10,6 @@
 #include <string.h>
 
 static unsigned char g_key[AES_KEYLEN];
-static unsigned char g_iv[AES_IVLEN];
 static int g_crypto_ready = 0;
 
 // base64 encryption
@@ -47,13 +46,13 @@ static int base64_decode(const char *input, unsigned char *output, int maxlen) {
 }
 
 int encrypt_buffer(const unsigned char *plaintext, int plaintext_len,
-                   unsigned char *ciphertext) {
+                   unsigned char *ciphertext, unsigned char *file_iv) {
   EVP_CIPHER_CTX *ctx = EVP_CIPHER_CTX_new();
   if (!ctx)
     return -1;
   int len = 0, ciphertext_len = 0;
 
-  if (1 != EVP_EncryptInit_ex(ctx, EVP_aes_256_ctr(), NULL, g_key, g_iv)) {
+  if (1 != EVP_EncryptInit_ex(ctx, EVP_aes_256_ctr(), NULL, g_key, file_iv)) {
     EVP_CIPHER_CTX_free(ctx);
     return -1;
   }
@@ -75,13 +74,13 @@ int encrypt_buffer(const unsigned char *plaintext, int plaintext_len,
 }
 
 int decrypt_buffer(const unsigned char *ciphertext, int ciphertext_len,
-                   unsigned char *plaintext) {
+                   unsigned char *plaintext, unsigned char *file_iv) {
   EVP_CIPHER_CTX *ctx = EVP_CIPHER_CTX_new();
   if (!ctx)
     return -1;
   int len = 0, plaintext_len = 0;
 
-  if (1 != EVP_DecryptInit_ex(ctx, EVP_aes_256_ctr(), NULL, g_key, g_iv)) {
+  if (1 != EVP_DecryptInit_ex(ctx, EVP_aes_256_ctr(), NULL, g_key, file_iv)) {
     EVP_CIPHER_CTX_free(ctx);
     return -1;
   }
