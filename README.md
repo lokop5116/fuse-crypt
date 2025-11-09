@@ -1,5 +1,5 @@
 # FUSE-crypt
-A FUSE filesystem that uses OpenSSL for encryption and saves state in a JSON file
+A multi-user FUSE filesystem that uses OpenSSL for encryption and saves your filesystem state in a JSON file.
 
 ## Features
 Mount your own filesystem from a mounting point, any created files are encrypted using AES 256 CTR encryption. The state of filesystem is stored in a JSON file between mounts.
@@ -48,7 +48,9 @@ To mount a filesystem run-
 ./fuse_man [directory] {-f flag to run it in foreground}
 ```
 
-While mounting you must enter a password which will be used for encrypting/ decrypting all data that you read/write.
+While mounting you must enter a username and a password which will be used for encrypting/ decrypting all data that you read/write.
+
+Each user has a separate and isolated filesystem.
 
 It is important that the password you enter must stay consistent between mountings otherwise data you read will be garbled and any data written to file will use this for encryption.
 
