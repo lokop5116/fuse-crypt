@@ -3,7 +3,7 @@
 #define FUSE_USE_VERSION 31
 
 // make sure to change this if you are trying to install this for yourself
-#define SAVE_PATH "/home/test/Projects/FUSE/state/fs_state.json"
+#define SAVE_DIRECTORY "/home/test/Projects/FUSE_clone/state/%s.json"
 
 // includes
 #include "common.h"
@@ -19,6 +19,7 @@
 // definition of root, declared in common.h
 Node *root = NULL;
 
+char SAVE_PATH[MAX_PATH_LEN];
 // name is self explanatory
 static Node *find_node(const char *path) {
 
@@ -434,8 +435,24 @@ static struct fuse_operations myOperations = {
 
 int main(int argc, char *argv[]) {
 
-  init_encryption();
+  char username[64];
+  char password[128];
+
+  printf("Enter username: ");
+
+  scanf("%63s", username);
+
+  printf("Enter encryption password: ");
+
+  scanf("%127s", password);
+
+  snprintf(SAVE_PATH, sizeof(SAVE_PATH), SAVE_DIRECTORY, username);
+
+  printf("Using save path: %s\n", SAVE_PATH);
+
   init_root();
+
+  init_encryption(password);
 
   // if file state already exists, load from there
   load_from_disk(SAVE_PATH);

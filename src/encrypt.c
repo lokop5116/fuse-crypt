@@ -102,13 +102,9 @@ int decrypt_buffer(const unsigned char *ciphertext, int ciphertext_len,
   return plaintext_len;
 }
 
-int init_encryption() {
-  char password[128];
-  unsigned char salt[32]; // derived from password
+int init_encryption(char password[128]) {
 
-  printf("Enter encryption password: ");
-  fgets(password, sizeof(password), stdin);
-  password[strcspn(password, "\n")] = 0;
+  unsigned char salt[32]; // derived from password
 
   // derive a deterministic salt from password itself (SHA-256)
   SHA256((unsigned char *)password, strlen(password), salt);
@@ -119,7 +115,7 @@ int init_encryption() {
     return 0;
   }
 
-  memset(password, 0, sizeof(password));
+  memset(password, 0, 128);
   g_crypto_ready = 1;
   return 1;
 }
