@@ -1,3 +1,3 @@
 # Example file state 
 
-Mount and use `mypassword` as password
+Mount as `fs_state` user and use `mypassword` as password
